@@ -6,6 +6,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h2>Welcome to SC6113 DAPP</h2>
+    <div class="container">
+        <h2>Welcome to SC6113 DAPP</h2>
+        <h3>Please enter your name:</h3>
+        <form action="/main" method="POST">
+            <input type="text" name="name" required>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
 </body>
 </html>
