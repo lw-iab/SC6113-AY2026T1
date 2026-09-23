@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SC6113 DAPP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Deposit Money</h2>
+        <input type="text" id="depositor" placeholder="Enter depositor" required>
+        <input type="text" id="amount" placeholder="Enter amount" required>
+
+        <button class="btn" onclick="depositMoney()">Deposit</button>
+        <button class="btn" onclick="depositView()">View Deposit</button>
+
+        <p id="view Depositor"></p>
+        <p id="view Amount"></p>
+
+        <form action="/main" method="POST">
+            <input type="submit" value="Go Back">
+        </form>
+
+        <script src="https://cdn.jsdelivr.net/npm/web3@4.16.0/dist/web3.min.js"></script>
+
+        <script>
+            const contractAddress = "0xb7b78cBe354fc23D9FE58657D5B2F80d1dd1535a";
+            const contractABI = [
+                {
+                    "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "depositor_",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "amount_",
+                        "type": "uint256"
+                    }
+                    ],
+                    "name": "depositMoney",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "name": "depositView",
+                    "outputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+                ];
+            const web3 = new Web3(window.ethereum);
+            const contract = new web3.eth.Contract(contractABI, contractAddress);
+
+            async function depositMoney() {
+                const accounts = await web3.eth.requestAccounts();
+                const depositor = document.getElementById("depositor").value;
+                const amount = document.getElementById("amount").value;
+                console.log("Depositor:", depositor);
+                console.log("Amount:", amount);
+                
+                console.log("Accounts[0]:", accounts[0]);
+                await contract.methods.depositMoney(depositor, amount).send({ from: accounts[0] });
+            }
+
+            async function depositView() {
+                const result = await contract.methods.depositView().call();
+                document.getElementById("view Depositor").innerText = `Depositor: ${result[0]}`;
+                document.getElementById("view Amount").innerText = `Amount: ${result[1]}`;
+            }
+        </script>
+    </div>
+</body>
+</html>
