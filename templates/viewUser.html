@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SC6113 DAPP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h4>User Log ({{ rows|length }})</h4>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Timestamp</th>
+            </tr>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <form action="/main" method="POST">
+            <input type="submit" value="Go Back">
+        </form>
+    </div>
+</body>
+</html>
